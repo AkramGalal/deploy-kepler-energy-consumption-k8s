@@ -10,6 +10,10 @@ This repository illustrates how to install and run Kepler (Kubernetes-based Effi
 - Kepler is deployed as a **DaemonSet** in Kubernetes: one Kepler pod runs on every node in the cluster. Each pod acts as an exporter, collecting node-level energy and performance metrics via RAPL/MSRs and exposing them to Prometheus.
 - When Kepler pods are deployed on VM nodes rather than bare-metal nodes, most hypervisors do not expose real RAPL power metrics from the host CPU to guest kernels. As a result, Kepler Pod inside a VM cannot access actual energy readings and will crash-loop.
 - By enabling synthetic power values, i.e., `dev.fake-cpu-meter.enabled: true` in the Kepler ConfigMap and restart the pods, this allows testing Kepler and collecting metrics in VM environments with estimated power measurements.
+- Accordingly, deploying Kepler depends on the environment-specific settings:
+  - Development: Use fake/estimate CPU meter when RAPL unavailable. (The approach of this repository).
+  - Production: Ensure nodes have Intel RAPL support.
+  - Cloud: May need different privilege configurations from the cloud provider.
 
 ## Prerequisites
 - Helm Chart Installation (Recommended for Kubernetes).
