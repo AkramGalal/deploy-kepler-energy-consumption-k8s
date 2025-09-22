@@ -35,22 +35,22 @@ This repository illustrates how to install and run Kepler (Kubernetes-based Effi
   ```
   
   3- Update Kepler ConfigMap to enable synthetic power values.
-    - Open ConfigMap file.
-    ```bash
-    kubectl -n kepler edit configmap kepler
-    ```
+  - Open ConfigMap file.
+```bash
+kubectl -n kepler edit configmap kepler
+```
     
-    - Edit ConfigMap by enabling `fake-cpu-meter`.
-    ```bash
-    dev:
-      fake-cpu-meter:
-        enabled: true
-    ```  
+  - Edit ConfigMap by enabling `fake-cpu-meter`.
+```bash
+dev:
+fake-cpu-meter:
+enabled: true
+```  
     
-    - Restart Kepler Pods.
-    ```bash
-    kubectl -n kepler delete pod -l app.kubernetes.io/instance=kepler
-    ```
+  - Restart Kepler Pods.
+```bash
+kubectl -n kepler delete pod -l app.kubernetes.io/instance=kepler
+```
     
   4- Check Deployment Status
     - Check Kepler namespace. Kepler DaemonSet will generate an exporter (pod) on each node of the K8s cluster (5 nodes), in addition to ClusterIP service.
