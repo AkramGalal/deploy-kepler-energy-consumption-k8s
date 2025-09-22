@@ -48,8 +48,8 @@ This repository illustrates how to install and run Kepler (Kubernetes-based Effi
     ```
   
 4- Check Deployment Status
-  - Check Kepler namespace. Kepler DaemonSet will generate an exporter (pod) on each node of the K8s cluster (5 nodes).
-    
+  - Check Kepler namespace. Kepler DaemonSet will generate an exporter (pod) on each node of the K8s cluster (5 nodes), in addition to ClusterIP service.
+
     <img width="1617" height="446" alt="Screenshot 2025-09-22 155009" src="https://github.com/user-attachments/assets/4445d8c2-bea2-40da-a9af-2df32549e248" />
 
 
