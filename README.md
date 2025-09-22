@@ -22,39 +22,47 @@ This repository illustrates how to install and run Kepler (Kubernetes-based Effi
 - Grafana.
 
 ## Setup and Deployment
+### 1. Deploy Kepler 
   1- Clone the repository
   ```bash
   git clone https://github.com/sustainable-computing-io/kepler.git
   cd kepler
    ```
 
-2- Install Kepler using Helm
-  ```bash
-  helm install kepler manifests/helm/kepler/ --namespace kepler --create-namespace --set namespace.create=false
-  ```
-
-3- Update Kepler ConfigMap to enable synthetic power values.
-  - Open ConfigMap file.
+  2- Install Kepler using Helm
     ```bash
-    kubectl -n kepler edit configmap kepler
+    helm install kepler manifests/helm/kepler/ --namespace kepler --create-namespace --set namespace.create=false
     ```
   
-  - Edit ConfigMap by enabling `fake-cpu-meter`.
-    ```bash
-    dev:
-      fake-cpu-meter:
-        enabled: true
-    ```  
+  3- Update Kepler ConfigMap to enable synthetic power values.
+    - Open ConfigMap file.
+      ```bash
+      kubectl -n kepler edit configmap kepler
+      ```
+    
+    - Edit ConfigMap by enabling `fake-cpu-meter`.
+      ```bash
+      dev:
+        fake-cpu-meter:
+          enabled: true
+      ```  
+    
+    - Restart Kepler Pods.
+      ```bash
+      kubectl -n kepler delete pod -l app.kubernetes.io/instance=kepler
+      ```
+    
+  4- Check Deployment Status
+    - Check Kepler namespace. Kepler DaemonSet will generate an exporter (pod) on each node of the K8s cluster (5 nodes), in addition to ClusterIP service.
   
-  - Restart Kepler Pods.
-    ```bash
-    kubectl -n kepler delete pod -l app.kubernetes.io/instance=kepler
-    ```
-  
-4- Check Deployment Status
-  - Check Kepler namespace. Kepler DaemonSet will generate an exporter (pod) on each node of the K8s cluster (5 nodes), in addition to ClusterIP service.
+  <img width="1617" height="446" alt="Screenshot 2025-09-22 155009" src="https://github.com/user-attachments/assets/4445d8c2-bea2-40da-a9af-2df32549e248" />
 
-    <img width="1617" height="446" alt="Screenshot 2025-09-22 155009" src="https://github.com/user-attachments/assets/4445d8c2-bea2-40da-a9af-2df32549e248" />
+### 2. Prometheus Setup
+- Configure Prometheus to scrape Kepler metrics
+
+### 3. Grafana Setup
+- Use pre-built Grafana dashboards to visualize Kepler energy metrics.
+
 
 
 ## References
