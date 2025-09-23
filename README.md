@@ -53,23 +53,38 @@ kubectl -n kepler delete pod -l app.kubernetes.io/instance=kepler
 ```
     
   4- Check Deployment Status
-    - Check Kepler namespace. Kepler DaemonSet will generate an exporter (pod) on each node of the K8s cluster (5 nodes), in addition to ClusterIP service.
+  - Check Kepler namespace.
+  - Kepler DaemonSet will generate an exporter (pod) on each node of the K8s cluster (5 nodes), in addition to ClusterIP service.
   
-  <img width="1617" height="446" alt="Screenshot 2025-09-22 155009" src="https://github.com/user-attachments/assets/4445d8c2-bea2-40da-a9af-2df32549e248" />
+    <img width="1617" height="446" alt="Screenshot 2025-09-22 155009" src="https://github.com/user-attachments/assets/4445d8c2-bea2-40da-a9af-2df32549e248" />
 
-### 2. Prometheus Setup
-- Configure Prometheus to scrape Kepler metrics
+### 2. Prometheus Integration
+- The pre-built Prometheus needs to scrape Kepler metrics, so a ServiceMonitor manifest is created and applied to the `monitoring` namespace.
+- A ServiceMonitor is a CRD provided by the Prometheus Operator that tells Prometheus which services to scrape and how.
+- In this integration, the ServiceMonitor selects the Kepler service in the `kepler` namespace and exposes the `http` port.  
+- `kepler-servicemonitor.yaml` file is included in this repository, to apply it:
+  ```bash
+  kubectl -n monitoring get servicemonitors
+  ```
+- To verify that Kepler data is exported to Prometheus, check Prometheus targets from the UI:
+  
+  <img width="3820" height="1009" alt="Screenshot 2025-09-24 002821" src="https://github.com/user-attachments/assets/be3d385c-c39e-45ac-b1d8-cae8781beea6" />
 
-kubectl -n monitoring get servicemonitors
+### 3. Grafana Integration
+- A pre-built Grafana-Kepler dashboard file is included in this repository.
+- In Grafana UI, go to Dashboards, select import, then upload the `dashboard.json` file.
+- Energy metrics will be visualized at the node, the namespace and the pod levels accross the K8s cluster.
+  
+  <img width="3792" height="1967" alt="Screenshot 2025-09-24 013959" src="https://github.com/user-attachments/assets/4dc33dee-b749-4bb9-adc9-621f666c634b" />
 
 
-In order to verify that Kepler data is exported to Prometheus, you can use your Prometheus URL to check list of targets
-<img width="3820" height="1009" alt="Screenshot 2025-09-24 002821" src="https://github.com/user-attachments/assets/be3d385c-c39e-45ac-b1d8-cae8781beea6" />
-
-### 3. Grafana Setup
-- Use pre-built Grafana dashboards to visualize Kepler energy metrics.
+  <img width="3798" height="1948" alt="Screenshot 2025-09-24 014043" src="https://github.com/user-attachments/assets/2a1365b5-9e8e-4102-ab23-23d9d22cfb1b" />
 
 
+  
+  
+
+  
 
 ## References
 [1] Sustainable Computing, Kepler: Kubernetes-based Efficient Power Level Exporter. [https://sustainable-computing.io](https://sustainable-computing.io)
