@@ -60,6 +60,12 @@ kubectl -n kepler delete pod -l app.kubernetes.io/instance=kepler
 ### 2. Prometheus Setup
 - Configure Prometheus to scrape Kepler metrics
 
+kubectl -n monitoring get servicemonitors
+
+
+In order to verify that Kepler data is exported to Prometheus, you can use your Prometheus URL to check list of targets
+<img width="3820" height="1009" alt="Screenshot 2025-09-24 002821" src="https://github.com/user-attachments/assets/be3d385c-c39e-45ac-b1d8-cae8781beea6" />
+
 ### 3. Grafana Setup
 - Use pre-built Grafana dashboards to visualize Kepler energy metrics.
 
