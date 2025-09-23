@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kepler
+  namespace: monitoring              
+  labels:
+    release: prometheus             
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kepler
+      app.kubernetes.io/instance: kepler
+  namespaceSelector:
+    matchNames:
+      - kepler                        
+  endpoints:
+    - port: http                      
+      interval: 30s
